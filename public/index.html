@@ -219,6 +219,17 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
         // [END_EXCLUDE]
       });
       // [END createwithemail]
+     
+     firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("user is signed in")
+          
+      } else {
+        console.log("user is NOT signed in")
+      }
+    })
+     
+     /*
      var user = firebase.auth().currentUser;
 
      user.updateProfile({
@@ -230,6 +241,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
      }).catch(function(error) {
       console.log("error creating user : " + error);
      });
+     */
 
  })
       
