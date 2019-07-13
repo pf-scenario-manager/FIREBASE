@@ -223,6 +223,15 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
      firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         console.log("user is signed in")
+        user.updateProfile({
+        displayName: username
+             //,
+          //photoURL: "https://example.com/jane-q-user/profile.jpg"
+         }).then(function() {
+            console.log("User create with : Name = " + username +"email = " + email); 
+         }).catch(function(error) {
+          console.log("error creating user : " + error);
+         });
           
       } else {
         console.log("user is NOT signed in")
@@ -230,7 +239,6 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     })
      
      /*
-     var user = firebase.auth().currentUser;
 
      user.updateProfile({
       displayName: username
