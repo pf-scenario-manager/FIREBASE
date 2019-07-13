@@ -12,9 +12,6 @@
     <script defer src="/__/firebase/6.2.4/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/6.2.4/firebase-auth.js"></script>
-    <script defer src="/__/firebase/6.2.4/firebase-database.js"></script>
-    <script defer src="/__/firebase/6.2.4/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/6.2.4/firebase-storage.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
 
@@ -93,16 +90,16 @@
 			 	<div class="w3-section">
 
 					<label><b>Nom d'utilisateur</b></label>
-					<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Choisissez un nom d'utilisateur" name="usrname" required>
+					<input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Choisissez un nom d'utilisateur" id="username" name="username" required>
 
 					<label><b>E-mail</b></label>
-					<input class="w3-input w3-border w3-margin-bottom"  type="text" placeholder="Entrez votre adresse e-mail" name="email" required>
+					<input class="w3-input w3-border w3-margin-bottom"  type="text" placeholder="Entrez votre adresse e-mail" id="email" name="email" required>
 
 					<label><b>Mot de passe</b></label>
-					<input class="w3-input w3-border w3-margin-bottom"  type="password" placeholder="Entrez un mot de passe" name="psw" required>
+					<input class="w3-input w3-border w3-margin-bottom"  type="password" placeholder="Entrez un mot de passe" id="pwd" name="psw" required>
 
 					<label><b>Repeat Password</b></label>
-					<input class="w3-input w3-border w3-margin-bottom"  type="password" placeholder="Répétez le mot de passe" name="psw-repeat" required>
+					<input class="w3-input w3-border w3-margin-bottom"  type="password" placeholder="Répétez le mot de passe" id="pwd-repeat"name="psw-repeat" required>
 
 					 <p>En cliquant sur s'inscrire, vous acceptez les <a href="#" style="color:dodgerblue">Conditions d'utilisation</a>.</p>
 
@@ -138,10 +135,19 @@ window.onclick = function(event) {
 	}
 }
 </script>
+      
+      
+      
+      
+      
   
     <!-- Connexion -->
     
-<script type="text/javascript" src="./data/userDatabase.json"></script>    
+
+
+      
+      
+      
 <script>
 document.getElementById('login-form').addEventListener('submit', function(e) {
   // prevent default browser behavior
@@ -171,9 +177,64 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
 })
     
 </script>
+      
+
 	
 
     <!-- Inscription --> 
+<script>
+ document.getElementById('registration-form').addEventListener('submit', function(e) {
+    // prevent default browser behavior
+    e.preventDefault();
+    console.log("in the registration form listener");
+    var username = document.getElementById('username').value 
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('pwd').value;
+    var passwordcheck = document.getElementById('pwd-repeat').value;
+    if (email.length < 4) {
+        alert('Please enter an email address.');
+        return;
+      }
+    if (password.length < 4) {
+        alert('Please enter a password.');
+        return;
+      }
+    if (password != passwordcheck) {
+        alert('Please enter a password that match the two password fields.');
+        return;
+      }
+      // Sign in with email and pass.
+      // [START createwithemail]
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode == 'auth/weak-password') {
+          alert('The password is too weak.');
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+        // [END_EXCLUDE]
+      });
+      // [END createwithemail]
+     var user = firebase.auth().currentUser;
+
+     user.updateProfile({
+      displayName: username
+         //,
+      //photoURL: "https://example.com/jane-q-user/profile.jpg"
+     }).then(function() {
+        console.log("User create with : Name = " + username +"email = " + email); 
+     }).catch(function(error) {
+      console.log("error creating user : " + error);
+     });
+
+ }
+      
+</script>
+
     
     
     
